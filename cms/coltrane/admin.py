@@ -5,5 +5,3 @@ class CategoryAdmin(admin.ModelAdmin):
     pass
     
 admin.site.register(Category, CategoryAdmin)
-
-
