@@ -1,0 +1,156 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE "auth_permission" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "name" varchar(50) NOT NULL,
+    "content_type_id" integer NOT NULL,
+    "codename" varchar(100) NOT NULL,
+    UNIQUE ("content_type_id", "codename")
+);
+INSERT INTO "auth_permission" VALUES(1,'Can add permission',1,'add_permission');
+INSERT INTO "auth_permission" VALUES(2,'Can change permission',1,'change_permission');
+INSERT INTO "auth_permission" VALUES(3,'Can delete permission',1,'delete_permission');
+INSERT INTO "auth_permission" VALUES(4,'Can add group',2,'add_group');
+INSERT INTO "auth_permission" VALUES(5,'Can change group',2,'change_group');
+INSERT INTO "auth_permission" VALUES(6,'Can delete group',2,'delete_group');
+INSERT INTO "auth_permission" VALUES(7,'Can add user',3,'add_user');
+INSERT INTO "auth_permission" VALUES(8,'Can change user',3,'change_user');
+INSERT INTO "auth_permission" VALUES(9,'Can delete user',3,'delete_user');
+INSERT INTO "auth_permission" VALUES(10,'Can add content type',4,'add_contenttype');
+INSERT INTO "auth_permission" VALUES(11,'Can change content type',4,'change_contenttype');
+INSERT INTO "auth_permission" VALUES(12,'Can delete content type',4,'delete_contenttype');
+INSERT INTO "auth_permission" VALUES(13,'Can add session',5,'add_session');
+INSERT INTO "auth_permission" VALUES(14,'Can change session',5,'change_session');
+INSERT INTO "auth_permission" VALUES(15,'Can delete session',5,'delete_session');
+INSERT INTO "auth_permission" VALUES(16,'Can add site',6,'add_site');
+INSERT INTO "auth_permission" VALUES(17,'Can change site',6,'change_site');
+INSERT INTO "auth_permission" VALUES(18,'Can delete site',6,'delete_site');
+INSERT INTO "auth_permission" VALUES(19,'Can add log entry',7,'add_logentry');
+INSERT INTO "auth_permission" VALUES(20,'Can change log entry',7,'change_logentry');
+INSERT INTO "auth_permission" VALUES(21,'Can delete log entry',7,'delete_logentry');
+INSERT INTO "auth_permission" VALUES(22,'Can add flat page',8,'add_flatpage');
+INSERT INTO "auth_permission" VALUES(23,'Can change flat page',8,'change_flatpage');
+INSERT INTO "auth_permission" VALUES(24,'Can delete flat page',8,'delete_flatpage');
+INSERT INTO "auth_permission" VALUES(25,'Can add search keyword',9,'add_searchkeyword');
+INSERT INTO "auth_permission" VALUES(26,'Can change search keyword',9,'change_searchkeyword');
+INSERT INTO "auth_permission" VALUES(27,'Can delete search keyword',9,'delete_searchkeyword');
+CREATE TABLE "auth_group_permissions" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "group_id" integer NOT NULL,
+    "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id"),
+    UNIQUE ("group_id", "permission_id")
+);
+CREATE TABLE "auth_group" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "name" varchar(80) NOT NULL UNIQUE
+);
+CREATE TABLE "auth_user_user_permissions" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "user_id" integer NOT NULL,
+    "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id"),
+    UNIQUE ("user_id", "permission_id")
+);
+CREATE TABLE "auth_user_groups" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "user_id" integer NOT NULL,
+    "group_id" integer NOT NULL REFERENCES "auth_group" ("id"),
+    UNIQUE ("user_id", "group_id")
+);
+CREATE TABLE "auth_user" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "username" varchar(30) NOT NULL UNIQUE,
+    "first_name" varchar(30) NOT NULL,
+    "last_name" varchar(30) NOT NULL,
+    "email" varchar(75) NOT NULL,
+    "password" varchar(128) NOT NULL,
+    "is_staff" bool NOT NULL,
+    "is_active" bool NOT NULL,
+    "is_superuser" bool NOT NULL,
+    "last_login" datetime NOT NULL,
+    "date_joined" datetime NOT NULL
+);
+INSERT INTO "auth_user" VALUES(1,'user','','','matthewlkiefer@gmail.com','pbkdf2_sha256$10000$8P6kf2WMID7b$XaFpcHmqj747TFmji7LGqyXDXDlRJimCsTxhfG4Sekg=',1,1,1,'2013-03-07 00:12:37.519408','2013-03-06 20:13:09.493080');
+CREATE TABLE "django_content_type" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "name" varchar(100) NOT NULL,
+    "app_label" varchar(100) NOT NULL,
+    "model" varchar(100) NOT NULL,
+    UNIQUE ("app_label", "model")
+);
+INSERT INTO "django_content_type" VALUES(1,'permission','auth','permission');
+INSERT INTO "django_content_type" VALUES(2,'group','auth','group');
+INSERT INTO "django_content_type" VALUES(3,'user','auth','user');
+INSERT INTO "django_content_type" VALUES(4,'content type','contenttypes','contenttype');
+INSERT INTO "django_content_type" VALUES(5,'session','sessions','session');
+INSERT INTO "django_content_type" VALUES(6,'site','sites','site');
+INSERT INTO "django_content_type" VALUES(7,'log entry','admin','logentry');
+INSERT INTO "django_content_type" VALUES(8,'flat page','flatpages','flatpage');
+INSERT INTO "django_content_type" VALUES(9,'search keyword','search','searchkeyword');
+CREATE TABLE "django_session" (
+    "session_key" varchar(40) NOT NULL PRIMARY KEY,
+    "session_data" text NOT NULL,
+    "expire_date" datetime NOT NULL
+);
+INSERT INTO "django_session" VALUES('2134a6c21ccbe08143bc205c1cead3ff','OGY3YTRlODVmODMwOGJlNTZlZDU4ZTAxZGFkNWM0ZjE2Y2Y5NTU4MTqAAn1xAShVEl9hdXRoX3Vz
+ZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED
+VQ1fYXV0aF91c2VyX2lkcQRLAXUu
+','2013-03-21 00:12:37.557192');
+CREATE TABLE "django_site" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "domain" varchar(100) NOT NULL,
+    "name" varchar(50) NOT NULL
+);
+INSERT INTO "django_site" VALUES(1,'127.0.0.1:8000','localhost');
+CREATE TABLE "django_admin_log" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "action_time" datetime NOT NULL,
+    "user_id" integer NOT NULL REFERENCES "auth_user" ("id"),
+    "content_type_id" integer REFERENCES "django_content_type" ("id"),
+    "object_id" text,
+    "object_repr" varchar(200) NOT NULL,
+    "action_flag" smallint unsigned NOT NULL,
+    "change_message" text NOT NULL
+);
+INSERT INTO "django_admin_log" VALUES(1,'2013-03-07 00:16:30.658954',1,6,'1','127.0.0.1:8000',2,'Changed domain and name.');
+INSERT INTO "django_admin_log" VALUES(2,'2013-03-07 14:23:59.660875',1,8,'1','/first-page/ -- My first page',1,'');
+INSERT INTO "django_admin_log" VALUES(3,'2013-03-14 01:51:51.967881',1,8,'1','/first-page/ -- My first page',2,'Changed content. Added search keyword "SearchKeyword object". Added search keyword "SearchKeyword object". Added search keyword "SearchKeyword object".');
+CREATE TABLE "django_flatpage_sites" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "flatpage_id" integer NOT NULL,
+    "site_id" integer NOT NULL REFERENCES "django_site" ("id"),
+    UNIQUE ("flatpage_id", "site_id")
+);
+INSERT INTO "django_flatpage_sites" VALUES(1,1,1);
+CREATE TABLE "django_flatpage" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "url" varchar(100) NOT NULL,
+    "title" varchar(200) NOT NULL,
+    "content" text NOT NULL,
+    "enable_comments" bool NOT NULL,
+    "template_name" varchar(70) NOT NULL,
+    "registration_required" bool NOT NULL
+);
+INSERT INTO "django_flatpage" VALUES(1,'/first-page/','My first page','<p>This is my second Django flat page</p>',0,'',0);
+CREATE TABLE "search_searchkeyword" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "keyword" varchar(50) NOT NULL,
+    "page_id" integer NOT NULL REFERENCES "django_flatpage" ("id")
+);
+INSERT INTO "search_searchkeyword" VALUES(1,'django',1);
+INSERT INTO "search_searchkeyword" VALUES(2,'flatpage',1);
+INSERT INTO "search_searchkeyword" VALUES(3,'matt',1);
+CREATE INDEX "auth_permission_1bb8f392" ON "auth_permission" ("content_type_id");
+CREATE INDEX "auth_group_permissions_425ae3c4" ON "auth_group_permissions" ("group_id");
+CREATE INDEX "auth_group_permissions_1e014c8f" ON "auth_group_permissions" ("permission_id");
+CREATE INDEX "auth_user_user_permissions_403f60f" ON "auth_user_user_permissions" ("user_id");
+CREATE INDEX "auth_user_user_permissions_1e014c8f" ON "auth_user_user_permissions" ("permission_id");
+CREATE INDEX "auth_user_groups_403f60f" ON "auth_user_groups" ("user_id");
+CREATE INDEX "auth_user_groups_425ae3c4" ON "auth_user_groups" ("group_id");
+CREATE INDEX "django_session_3da3d3d8" ON "django_session" ("expire_date");
+CREATE INDEX "django_admin_log_403f60f" ON "django_admin_log" ("user_id");
+CREATE INDEX "django_admin_log_1bb8f392" ON "django_admin_log" ("content_type_id");
+CREATE INDEX "django_flatpage_sites_21210108" ON "django_flatpage_sites" ("flatpage_id");
+CREATE INDEX "django_flatpage_sites_6223029" ON "django_flatpage_sites" ("site_id");
+CREATE INDEX "django_flatpage_a4b49ab" ON "django_flatpage" ("url");
+CREATE INDEX "search_searchkeyword_32d04bc7" ON "search_searchkeyword" ("page_id");
+COMMIT;
