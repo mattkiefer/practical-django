@@ -111,6 +111,8 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     '/home/user/html/django-templates/cms',
+    '/home/user/django_projects/cms/coltrane/templates/coltrane',
+    '/home/user/django_projects/cms/templates/cms',
 )
 
 INSTALLED_APPS = (

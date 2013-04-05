@@ -4,7 +4,12 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+from coltrane.models import Entry
 
+entry_info_dict = {
+    'queryset': Entry.objects.all(),
+    'date_field': 'pub_date',
+}    
 
 urlpatterns = patterns('',
     # Examples:
