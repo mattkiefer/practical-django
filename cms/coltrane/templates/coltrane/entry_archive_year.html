@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>Entries index</title>
+    </head>
+    <body>
+        <h1>Entries index</h1>
+        {% for month in date_list %}
+            <a href="/weblog/{{ year }}/{{ month|date:"b" }}/"><h2>{{ month|date:"F" }}</h2></a>
+        {% endfor %}
+    </body>
+</html>
