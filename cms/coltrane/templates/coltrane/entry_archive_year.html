@@ -3,9 +3,12 @@
         <title>Entries index</title>
     </head>
     <body>
+    {% load tz %}
         <h1>Entries index</h1>
+        {% localtime off %}
         {% for month in date_list %}
-            <a href="/weblog/{{ year }}/{{ month|date:"b" }}/"><h2>{{ month|date:"F" }}</h2></a>
+            <a href="/weblog/{{ year }}/{{ month|date:'b' }}/"><h2>{{ month|date:'F' }}</h2></a>
         {% endfor %}
+        {% endlocaltime %}
     </body>
 </html>
