@@ -72,3 +72,33 @@ class Entry(models.Model):
                                               'slug':self.slug })
     
     get_absolute_url = models.permalink(get_absolute_url)
+    
+class Link(models.Model):
+    title = models.CharField(max_length=250)
+    description = models.TextField(blank=True)
+    description_html = models.TextField(blank=True)
+    url = models.URLField(unique=True)
+    
+    posted_by = models.ForeignKey(User)
+    
+    pub_date = models.DateTimeField(default=datetime.datetime.now)
+    slug = models.SlugField(unique_for_date='pub_date')
+    
+    tags = TagField()
+    
+    enable_comments = models.BooleanField(default=True)
+    post_elsewhere = models.BooleanField('Post to Delicious', default=True)
+    
+    via_name = models.CharField('Via', max_length=250, blank=True, help_text="The name of the person or site where you found the link. Optional")
+    via_URL = models.URLField('Via URL', blank=True, help_text="The URL where you found the link. Optional")
+    
+    class Meta:
+        order = ['-pub_date']
+        
+    def __unicode__(self):
+        return self.title
+        
+    def save(self):
+        if self.description:
+            self.description_html = markdown(self.description)
+        super(Link, self).save()
