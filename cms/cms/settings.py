@@ -161,3 +161,7 @@ LOGGING = {
         },
     }
 }
+
+DELICIOUS_USER = 'mattkiefer'
+
+DELICIOUS_PASSWORD = 'mkah1212'

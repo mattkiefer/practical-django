@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Links index</title>
+    </head>
+    <body>
+    {% load tz %}
+        <h1>Links index</h1>
+        {% localtime off %}
+        {% for month in date_list %}
+            <a href="/weblog/{{ year }}/{{ month|date:'b' }}/"><h2>{{ month|date:'F' }}</h2></a>
+        {% endfor %}
+        {% endlocaltime %}
+    </body>
+</html>
