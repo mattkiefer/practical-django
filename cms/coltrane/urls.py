@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.utils import timezone
-from coltrane.models import Entry, Link
+from coltrane.models import Category, Entry, Link
+from tagging.models import Tag
 
 # entry date-based query kwargs
 entry_info_dict = {
@@ -29,7 +30,15 @@ urlpatterns = patterns('django.views.generic.date_based',
 )
 
 # category urls
-urlpatterns += patterns('coltrane.views',
-    url(r'^categories/$', 'category_list'),
-    url(r'^categories/(?P<slug>[-\w]+)/$', 'category_detail'),
+urlpatterns += patterns('',
+    url(r'^categories/$', 'django.views.generic.list_detail.object_list',{'queryset':Category.objects.all()}),
+    url(r'^categories/(?P<slug>[-\w]+)/$', 'coltrane.views.category_detail'),
+)
+
+# tag urls
+urlpattern += patterns('',
+    url(r'^tags/$', 'django.views.generic.list_detail.object_list', {'queryset':Tag.objects.all()}),
+    url(r'^tags/entries/(?P<tag>[-\w]+)$', 'tagging.views.tagged_object_list',{'queryset_or_model':Entry,'template_name': 'coltrane/entries_by_tag.html'}),
+    url(r'^tags/links/(?P<tag>[-\w]+)$', 'tagging.views.tagged_object_list',{'queryset_or_model':Link,'template_name': 'coltrane/links_by_tag.html'}),
+)
 )
