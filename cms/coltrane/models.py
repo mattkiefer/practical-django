@@ -10,6 +10,7 @@ from django.utils.encoding import smart_str
 
 from django.conf import settings
 
+# category model
 
 class Category(models.Model):
     title = models.CharField(max_length=250, help_text='Maximum 250 characters.')
@@ -25,6 +26,18 @@ class Category(models.Model):
         
     def get_absolute_url(self):
         return "/categories/%s/" % self.slug
+
+    def live_entry_set(self):
+        from coltrane.models import Entry
+        return self.entry_set.filter(status=Entry.LIVE_STATUS)
+
+# custom manager filters for live entry objects
+
+class LiveEntryManager(models.Manager):
+    def get_query_set(self):
+        return super(LiveEntryManager, self).get_query_set().filter(status=self.model.LIVE_STATUS)
+        
+# entry model
         
 class Entry(models.Model):
     LIVE_STATUS = 1
@@ -36,6 +49,9 @@ class Entry(models.Model):
         (HIDDEN_STATUS, 'Hidden'),
     )
     status = models.IntegerField(choices = STATUS_CHOICES, default = LIVE_STATUS)
+
+    live = LiveEntryManager()
+    objects = models.Manager()
 
     # core fields
     title = models.CharField(max_length=250, help_text='Write a headline here.')
@@ -76,6 +92,8 @@ class Entry(models.Model):
                                               'slug':self.slug })
     
     get_absolute_url = models.permalink(get_absolute_url)
+    
+# link model
     
 class Link(models.Model):
     # Metadata
