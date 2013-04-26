@@ -8,7 +8,7 @@ admin.site.register(Category, CategoryAdmin)
 
 class EntryAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug' : ['title'] }
-    
+    list_display = ('title','slug')
 admin.site.register(Entry, EntryAdmin)
 
 class LinkAdmin(admin.ModelAdmin):
