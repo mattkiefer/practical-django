@@ -1,14 +1,26 @@
-<html>
-    <head>
-        <title>Entries index</title>
-    </head>
-    <body>
-    {% load tz %}
-        <h1>Entries index</h1>
-        {% localtime off %}
-        {% for month in date_list %}
-            <a href="/weblog/{{ year }}/{{ month|date:'b' }}/"><h2>{{ month|date:'F' }}</h2></a>
-        {% endfor %}
-        {% endlocaltime %}
-    </body>
-</html>
+{% extends "base_entries.html" %}
+
+{% block title %}{{ block.super }} | {{ year }}{% endblock %}
+
+{% block content %}
+
+{% load tz %}
+
+<h2>{{ year }}</h2>
+<ul>
+    {% localtime off %}
+    {% for month in date_list %}
+        <li>
+            <a href = '{% url coltrane_entry_archive_month year,month|date:"b" %}'>{{ month|date:"F" }}</a>
+        </li>
+    {% endfor %}
+    {% endlocaltime %}
+</ul>
+{% endblock %}
+
+{% block whatis %}
+<p>A list of months in {{ year }} when I published entries in my blog.</p>
+{% endblock %}
+
+
+
