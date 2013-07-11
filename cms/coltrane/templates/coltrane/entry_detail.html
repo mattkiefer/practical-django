@@ -1,4 +1,4 @@
-{% extends "base.html" %}        
+{% extends "base_entries.html" %}        
 
 {% block content %}
 <h2>{{ object.title }}</h2>
@@ -7,6 +7,14 @@
 
 {% block whatis %}
 <p>This is an entry posted to my blog on {{ object.pub_date|date:"F j, Y" }}</p>
+
+{% load tagging_tags %}
+{% for item in object_list %}
+    {% tagged_objects item in coltrane.Entry as goods %}
+    {% if goods %}
+        {{ goods.name }}
+    {% endif %}
+{% endfor %}
 
 {% if object.categories.count %}
     <p>This entry is part of the categor{{ object.categories.count|pluralize:"y,ies" }}:</p>
@@ -19,21 +27,5 @@
 {% else %}
     <p>This entry isn't part of any categories.</p>
 {% endif %}
-
-<h1>Tag count: {{ object.tags.count }}</h1>
-
-{% if object.tags.count %}
-    <p>This entry is tagged:</p>
-    {% for tag in object.tags.all %}
-        <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
-        {% if forloop.last %}{% else %}
-        {% ifequal forloop.revcounter0 1 %} and {% else %}, {% endifequal %}
-        {% endif %}
-    {% endfor %}
-{% else %}
-    <p>This entry doesn't have any tags.</p>
-{% endif %}
-
-
 
 {% endblock %}

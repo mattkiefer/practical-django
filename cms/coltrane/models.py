@@ -5,6 +5,7 @@ from django.db import models
 
 from markdown import markdown
 from tagging.fields import TagField
+from tagging.models import Tag
 
 from django.utils.encoding import smart_str
 
@@ -133,3 +134,6 @@ class Link(models.Model):
                                             'slug': self.slug })
 
     get_absolute_url = models.permalink(get_absolute_url)
+    
+    def get_tags(self):
+        return Tag.objects.get_for_object(self)
