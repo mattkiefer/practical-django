@@ -1,1 +1,10 @@
-placeholder copy for entries_by_tag.html
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>for loop</h1>
+{% for tag in tagged_object_list %}
+    <h1>Tag: {{ tag.name }}</h1>
+{% endfor %}
+
+{% endblock %}

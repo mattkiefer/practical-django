@@ -1,1 +1,10 @@
-placeholder copy for links_by_tag.html
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for tag in object_list %}
+    <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
+{% endfor %}
+
+
+{% endblock %}

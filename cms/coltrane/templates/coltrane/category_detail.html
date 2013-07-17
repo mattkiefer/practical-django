@@ -1,1 +1,6 @@
-here's the category_detail.html template ... I'll put some content here later
+{% extends "base.html" %}
+
+<h1>Categories:</h1>
+{% for category in object_list %}
+    <h1>{{ category.title }}</h1>
+{% endfor %}

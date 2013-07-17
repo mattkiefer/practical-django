@@ -1,19 +1,21 @@
 {% extends "base_links.html" %}        
 
+{% block title %}{{ block.super }} | {{ object.title }}{% endblock %}
+
 {% block content %}
 <h2>{{ object.title }}</h2>
 {{ object.description_html|safe }}
 <p><a href="{{ object.url }}">Read more ...</a></p>
 {% endblock %}
 
-{% block whatis %}
+ {% block whatis %}
 <p>This is a link posted to my blog on {{ object.pub_date|date:"F j, Y" }}</p>
 
 
 {% if object.get_tags %}
     <p>This linked is tagged:</p>
     {% for tag in object.get_tags %}
-        <a href="{{ tag.get_url }}">{{ tag.name }}</a>
+        <a href="/weblog/tags/links/{{ tag.name }}/">{{ tag.name }}</a>
         {% if forloop.last %}{% else %}
         {% ifequal forloop.revcounter0 1 %} and {% else %}, {% endifequal %}
         {% endif %} 
