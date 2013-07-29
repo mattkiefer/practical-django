@@ -6,7 +6,15 @@
 
 <h2>Comments</h2>
 {% load comments %}
+{% load markup %}
+
 {% render_comment_form for object %}
+
+{% get_comment_list for object as comment_list %}
+{% for comment in comment_list %}
+    <p>On {{ comment.submit_date|date:"F j, Y" }}, {{comment.name}} said:</p>
+    {{ comment.comment|markdown }}
+{% endfor %}
 
 {% endblock %}
 
@@ -32,5 +40,9 @@
 {% else %}
     <p>This entry isn't part of any categories.</p>
 {% endif %}
+
+{% load comments %}
+{% get_comment_count for object as comment_count %}
+<p>So far, this entry has {{ comment_count }} comment{{ comment_count|pluralize}}.</p>
 
 {% endblock %}
